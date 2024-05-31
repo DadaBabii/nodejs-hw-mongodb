@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/constants.js';
 import { getAllContacts, getContactById } from './services/contacts.js';
+import { isValidObjectId } from 'mongoose';
 
 dotenv.config();
 
@@ -36,6 +37,12 @@ export const setupServer = () => {
   });
   app.get('/contacts/:contactId', async (req, res) => {
     const id = req.params.contactId;
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        status: 400,
+        message: `${id} is not valid`,
+      });
+    }
 
     const contactById = await getContactById(id);
 
