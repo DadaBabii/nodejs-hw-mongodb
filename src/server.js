@@ -38,6 +38,7 @@ export const setupServer = () => {
     const id = req.params.contactId;
 
     const contactById = await getContactById(id);
+
     if (!contactById) {
       return res.status(404).json({
         status: 404,
